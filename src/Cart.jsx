@@ -1,25 +1,7 @@
-import { useState, useEffect } from 'react'
+import { useOutletContext } from 'react-router'
+
 const Cart = () => {
-    const [cart, setCart] = useState([])
-    const handleRemoveFromCart = (id) => {
-        const cartItems = JSON.parse(localStorage.getItem('cart')) || []
-        const updatedCart = cartItems.filter(item => item.id !== id)
-        localStorage.setItem('cart', JSON.stringify(updatedCart))
-        setCart(updatedCart)
-    }
-    const loadCart = () => {
-        const cartItems = JSON.parse(localStorage.getItem('cart')) || []
-        setCart(cartItems)
-    }
-    
-    useEffect(() => {
-        loadCart()
-        // Listen for cart updates
-        window.addEventListener('cartUpdated', loadCart)
-        return () => {
-            window.removeEventListener('cartUpdated', loadCart)
-        }
-    }, [])
+    const { cart, removeFromCart } = useOutletContext()
     
     const totalCost = cart.reduce((total, item) => {
         return total + (item.price * item.qty)
@@ -40,7 +22,7 @@ const Cart = () => {
                                 <p>Price: ${item.price}</p>
                                 <p>Quantity: {item.qty}</p>
                                 <p>Subtotal: ${(item.price * item.qty).toFixed(2)}</p>
-                                <button onClick={() => handleRemoveFromCart(item.id)}>Remove</button>
+                                <button onClick={() => removeFromCart(item.id)}>Remove</button>
                             </div>
                         ))}
                         <div>

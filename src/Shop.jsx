@@ -1,7 +1,9 @@
 import {useState, useEffect} from 'react'
-import Navbar from './Navbar.jsx'
+import { useOutletContext } from 'react-router'
 import ProductCard from './ProductCard.jsx'
+
 const Shop = () => {
+    const { addToCart } = useOutletContext()
     const [products, setProducts] = useState([])
     useEffect(() => {
         fetch('https://fakestoreapi.com/products')
@@ -15,7 +17,7 @@ const Shop = () => {
                 <h1>Shop</h1>
                 <div>
                     {products.map(product => (
-                        <ProductCard key={product.id} product={product} />
+                        <ProductCard key={product.id} product={product} addToCart={addToCart} />
                     ))}
                 </div>
             </div>
